@@ -46,15 +46,13 @@
   \vskip0.6em\hbox{\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}%
   \vskip2pt{\color{blgaccent}\rule{\linewidth}{1.4pt}}\vskip0.2em}
 
-% ── Watermark: logo + author, lower-left of every slide ─────────────────────
+% ── Watermark: icon + © author · title, centred at the foot of every slide ──
 \setbeamertemplate{background}{%
   \begin{tikzpicture}[remember picture,overlay]
-    \node[anchor=south west,inner sep=0pt]
-      at ($(current page.south west)+(6mm,4mm)$)
-      {\includegraphics[height=6mm]{assets/boulingua-logo.png}};
-    \node[anchor=west,inner sep=0pt,text=blgmuted,align=left]
-      at ($(current page.south west)+(14mm,5.8mm)$)
-      {\blgsemibold\scriptsize boulingua\\[0.5pt]{\tiny\mdseries S.~Le Boulanger}};
+    \node[anchor=south,inner sep=0pt] at ($(current page.south)+(0,3.4mm)$)
+      {\raisebox{-1.0mm}{\includegraphics[height=3.8mm]{assets/boulingua-logo.png}}%
+       \hspace{1.5mm}{\blgsemibold\scriptsize\color{blgmuted}%
+         \textcopyright\ S.~Le Boulanger \ \textbullet\ \inserttitle}};
   \end{tikzpicture}}
 
 % ── Footline: slide number, muted, right ────────────────────────────────────
