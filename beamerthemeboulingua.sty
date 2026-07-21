@@ -1,0 +1,73 @@
+% beamerthemeboulingua.sty — Beamer theme in the boulingua design language.
+% Compile decks with XeLaTeX or LuaLaTeX (fontspec). Self-contained: bundles
+% the Source Sans 3 / JetBrains Mono fonts and the boulingua logo.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeboulingua}[2026/07/21 boulingua beamer theme]
+
+\RequirePackage{fontspec}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+
+% ── Palette ─────────────────────────────────────────────────────────────────
+\definecolor{blgaccent}{HTML}{1A73E8}
+\definecolor{blgaccenthover}{HTML}{0B57D0}
+\definecolor{blgfg}{HTML}{23272B}
+\definecolor{blgmuted}{HTML}{6B7280}
+\definecolor{blgrule}{HTML}{E4E7EB}
+\definecolor{blgsurface}{HTML}{F7F8FA}
+\definecolor{blgcefrA}{HTML}{4CAF50}
+\definecolor{blgcefrB}{HTML}{1A73E8}
+\definecolor{blgcefrC}{HTML}{8E24AA}
+
+% ── Fonts (bundled) ─────────────────────────────────────────────────────────
+\setmainfont{SourceSans3}[Path=fonts/, Extension=.ttf,
+  UprightFont=*-Regular, BoldFont=*-Bold, FontFace={l}{n}{*-Light}]
+\newfontfamily\blgsemibold{SourceSans3-Semibold}[Path=fonts/, Extension=.ttf]
+\setmonofont{JetBrainsMono-Regular}[Path=fonts/, Extension=.ttf]
+\newfontfamily\blgmarker{PermanentMarker-Regular}[Path=fonts/, Extension=.ttf]
+
+% ── Colours & fonts of beamer elements ──────────────────────────────────────
+\setbeamercolor{normal text}{fg=blgfg}
+\setbeamercolor{structure}{fg=blgaccent}
+\setbeamercolor{frametitle}{fg=blgfg}
+\setbeamercolor{title}{fg=blgfg}
+\setbeamercolor{itemize item}{fg=blgaccent}
+\setbeamercolor{itemize subitem}{fg=blgmuted}
+\setbeamercolor{block title}{fg=white,bg=blgaccent}
+\setbeamercolor{block body}{bg=blgsurface}
+\setbeamerfont{frametitle}{family=\blgsemibold,size=\LARGE}
+\setbeamerfont{title}{family=\blgsemibold,size=\huge}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\small\raise0.5pt\hbox{\textbullet}}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% ── Frame title: accent rule underneath ─────────────────────────────────────
+\setbeamertemplate{frametitle}{%
+  \vskip0.6em\hbox{\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}%
+  \vskip2pt{\color{blgaccent}\rule{\linewidth}{1.4pt}}\vskip0.2em}
+
+% ── Watermark: logo + author, lower-left of every slide ─────────────────────
+\setbeamertemplate{background}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner sep=0pt]
+      at ($(current page.south west)+(6mm,4mm)$)
+      {\includegraphics[height=6mm]{assets/boulingua-logo.png}};
+    \node[anchor=west,inner sep=0pt,text=blgmuted,align=left]
+      at ($(current page.south west)+(14mm,5.8mm)$)
+      {\blgsemibold\scriptsize boulingua\\[0.5pt]{\tiny\mdseries S.~Le Boulanger}};
+  \end{tikzpicture}}
+
+% ── Footline: slide number, muted, right ────────────────────────────────────
+\setbeamertemplate{footline}{%
+  \hfill\usebeamercolor[fg]{blgmuted}\color{blgmuted}\scriptsize
+  \insertframenumber\hspace{6mm}\vskip3mm}
+
+% ── Title page ──────────────────────────────────────────────────────────────
+\setbeamertemplate{title page}{%
+  \vfill
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}
+  \vskip4pt{\color{blgaccent}\rule{0.42\linewidth}{2pt}}\par
+  \vskip10pt{\color{blgmuted}\large\insertsubtitle\par}
+  \vskip18pt{\color{blgmuted}\normalsize\insertauthor\hfill\insertdate}
+  \vfill}
+\endinput
