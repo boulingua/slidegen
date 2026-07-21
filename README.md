@@ -1,38 +1,130 @@
 # slidegen
 
 Beamer (LaTeX) **slide template** in the [boulingua](https://github.com/boulingua)
-design language, for generating course presentations that match the sister sites
-and the [sheetgen](https://github.com/boulingua/sheetgen) worksheets.
+design language, for course presentations that match the sister sites and the
+[sheetgen](https://github.com/boulingua/sheetgen) worksheets.
 
 > **Status — draft.** The theme and an example deck are in place; a
 > content-to-slides generator will follow.
 
-## Design language
+---
 
-- **Fonts:** Source Sans 3 (headings/body) + JetBrains Mono (code) — bundled in `fonts/`.
-- **Accent:** boulingua blue `#1a73e8`; CEFR ramp (A `#4caf50`, B `#1a73e8`, C `#8e24aa`).
-- **Watermark:** the boulingua logo + author **S. Le Boulanger** in the **lower-left of every slide**.
-- Clean, minimal frames with an accent rule under each frame title.
+## Requirements
 
-## Usage
+- **XeLaTeX** or **LuaLaTeX** (the theme uses `fontspec`; pdfLaTeX will not work).
+- No system fonts needed — Source Sans 3, JetBrains Mono and Permanent Marker are
+  bundled in `fonts/`.
+- **Compile twice.** The foot watermark is placed with TikZ `remember picture`,
+  which needs two passes to settle. `make` does this for you.
+
+## Quick start
 
 ```bash
-make example          # or: xelatex slides-template.tex  (run twice)
+make            # build slides-template.pdf (two XeLaTeX passes)
+make clean      # remove LaTeX aux files
 ```
 
-Requires **XeLaTeX** or **LuaLaTeX** (for `fontspec`). In your own deck:
+or by hand:
+
+```bash
+xelatex slides-template.tex
+xelatex slides-template.tex
+```
+
+## Using the theme in your own deck
 
 ```latex
-\documentclass[aspectratio=169]{beamer}
+\documentclass[aspectratio=169,11pt]{beamer}
 \usetheme{boulingua}
-\title{...}\subtitle{...}\author{S. Le Boulanger}
+\blgsetlang{efl}          % pick the language accent + icon (see table below)
+
+\title{Unit 2 — Growing Up}
+\subtitle{English · Track G+M · Klasse 7 · Niveau M}
+% \author and \date are NOT shown on the title slide — the foot watermark
+% already carries "© S. Le Boulanger · <title>" on every slide.
+
+\begin{document}
+\begin{frame}[plain]\titlepage\end{frame}
+
+\begin{frame}{Learning objectives}
+  \begin{itemize}
+    \item ...
+  \end{itemize}
+\end{frame}
+\end{document}
 ```
+
+### What the theme gives you
+
+| Element | Behaviour |
+|---|---|
+| **Title slide** | Language icon → title → accent rule → subtitle. No author/date (see watermark). |
+| **Frame titles** | Semibold, with a thin accent rule underneath. |
+| **`block`** | Rounded, accent-coloured title bar (use for *Rule*, *Note*, *Tip* …). |
+| **Itemize bullets** | Small accent squares. |
+| **Foot watermark** | The boulingua **B** (black-on-transparent) + `© S. Le Boulanger · <title>`, centred on **every** slide. `<title>` is pulled from `\title`. |
+| **Slide number** | Muted, lower-right. |
+
+### Commands
+
+- `\blgsetlang{code}` — set the language accent **and** the language icon in one call
+  (e.g. `\blgsetlang{daf}`). Call it once in the preamble. Omit it to stay boulingua blue.
+- `\blglangmark[height]` — draw the current language's icon (used on the title slide;
+  available anywhere, e.g. `\blglangmark[8mm]`). No-op until `\blgsetlang` is called.
+
+## Design language
+
+- **Fonts:** Source Sans 3 (headings/body) + JetBrains Mono (code), bundled.
+- **CEFR ramp** (shared across all sites, independent of language):
+  A `#4CAF50`, B `#1A73E8`, C `#8E24AA`.
+- **Watermark:** boulingua logo + author, centred at the foot of every slide.
+- **Per-language accent + icon** — see below.
+
+## Per-language accent colours & icons
+
+Every language project has **its own signature accent** and **its own abstract
+icon**. The accents are **flag-safe** — each hue is deliberately chosen *not* to
+appear in that language's own flag — mutually distinct (≥20° apart on the hue
+wheel), kept clear of the boulingua hub blue, and contrast-checked for light and
+dark backgrounds. Select one with `\blgsetlang{code}`:
+
+<!-- palette:begin -->
+| Code | Language | Icon | Light accent | Dark accent |
+|------|----------|------|--------------|-------------|
+| `daf` | German | hexagon | `#1D87A7` | `#7ECEE7` |
+| `efl` | English | circle | `#248D19` | `#89E77E` |
+| `fle` | French | square | `#4B8D19` | `#ACE77E` |
+| `afl` | Arabic | pentagon | `#4A23C7` | `#977EE7` |
+| `cfl` | Chinese | triangle | `#2334C7` | `#7E89E7` |
+| `ele` | Spanish | diamond | `#198D81` | `#7EE7DC` |
+| `gfl` | Greek | U-shape | `#C74A23` | `#E7977E` |
+| `ils` | Italian | ring | `#8023C7` | `#B97EE7` |
+| `jfl` | Japanese | rounded square | `#867B18` | `#E7DC7E` |
+| `lle` | Latin | semicircle | `#C72334` | `#E77E89` |
+| `nsf` | Norwegian | star | `#6D8618` | `#CEE77E` |
+| `nvt` | Dutch | plus | `#198D34` | `#7EE797` |
+| `pfl` | Polish | chevron | `#AD701F` | `#E7B97E` |
+| `ple` | Portuguese | trapezoid | `#B723C7` | `#DC7EE7` |
+| `rki` | Russian | octagon | `#198D5B` | `#7EE7B9` |
+| `tfl` | Turkish | arch | `#C7236A` | `#E77EAC` |
+| `ufl` | Ukrainian | heptagon | `#C723A1` | `#E77ECE` |
+<!-- palette:end -->
+
+The slides use the **light** accent (they print on white). The dark values are
+the matching web dark-theme accents, kept here so the whole boulingua colour
+system lives in one place. The icons in `brand/icons/<code>.pdf` are the same
+marks used in each language's README and on the hub website.
 
 ## Files
 
-- `beamerthemeboulingua.sty` — the theme
-- `slides-template.tex` — worked example
-- `fonts/`, `assets/boulingua-logo.png` — bundled assets
+```
+beamerthemeboulingua.sty   the theme (palette, fonts, templates, \blgsetlang)
+slides-template.tex        worked example deck
+brand/icons/<code>.pdf     17 per-language icons (accent-filled)
+fonts/                     bundled TTFs
+assets/boulingua-logo.png  watermark logo (black-on-transparent)
+Makefile
+```
 
 ## Licence
 
