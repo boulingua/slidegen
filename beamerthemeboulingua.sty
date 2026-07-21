@@ -7,6 +7,9 @@
 \RequirePackage{fontspec}
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
+% PDF metadata — attribute the author in the file's core properties.
+\hypersetup{pdfauthor={S. Le Boulanger}}
+\AtBeginDocument{\hypersetup{pdftitle={\inserttitle}}}
 
 % ── Palette ─────────────────────────────────────────────────────────────────
 % Per-language accent colours (flag-safe; one signature hue per language, none
