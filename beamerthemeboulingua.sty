@@ -61,11 +61,12 @@
   \insertframenumber\hspace{6mm}\vskip3mm}
 
 % ── Title page ──────────────────────────────────────────────────────────────
+% Author + date are carried by the foot watermark, so the title slide shows
+% only the title, accent rule and subtitle.
 \setbeamertemplate{title page}{%
   \vfill
   {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}
   \vskip4pt{\color{blgaccent}\rule{0.42\linewidth}{2pt}}\par
   \vskip10pt{\color{blgmuted}\large\insertsubtitle\par}
-  \vskip18pt{\color{blgmuted}\normalsize\insertauthor\hfill\insertdate}
   \vfill}
 \endinput
